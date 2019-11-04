@@ -1,0 +1,27 @@
+USE ykang89assign2db;
+-- Query 1
+SELECT lname FROM patient;
+-- Query 2
+SELECT DISTINCT lname FROM patient;
+-- Query 3
+SELECT * FROM doctor ORDER BY lname ASC;
+-- Query 4
+SELECT name, hospitalcode FROM hospital WHERE bedcount > 1500;
+-- Query 5
+SELECT DISTINCT fname, lname FROM doctor WHERE doctor.hospitalcode = (SELECT hospitalcode FROM hospital WHERE hospital.name = "St.Joseph");
+-- Query 6
+SELECT fname, lname FROM patient WHERE lname LIKE "G%";
+-- Query 7
+SELECT fname, lname FROM patient WHERE ohipnum IN (SELECT ohipnum FROM treats WHERE licensenum=(SELECT licensenum FROM doctor WHERE lname = "Clooney"));
+-- Query 8
+SELECT hospital.name, hospital.city, doctor.lname FROM hospital, doctor WHERE hospital.headnum = doctor.licensenum;
+-- Query 9
+SELECT SUM(bedcount) AS "Total number of beds: " FROM hospital;
+-- Query 10
+SELECT patient.fname, doctor.fname FROM patient, doctor, hospital, treats WHERE doctor.licensenum = hospital.headnum AND patient.ohipnum = treats.ohipnum AND doctor.licensenum = treats.licensenum;
+-- Query 11
+SELECT DISTINCT doctor.fname, doctor.lname FROM hospital, doctor WHERE doctor.specialty = "Surgeon" AND doctor.hospitalcode IN (SELECT hospitalcode FROM hospital WHERE name = "Victoria");
+-- Query 12
+SELECT DISTINCT fname FROM doctor WHERE doctor.licensenum NOT IN (SELECT licensenum FROM treats WHERE treats.licensenum = doctor.licensenum);
+-- Query 13
+SELECT fname, lname FROM doctor WHERE licensenum IN (SELECT licensenum FROM treats GROUP BY licensenum HAVING COUNT(ohipnum) >= 2);

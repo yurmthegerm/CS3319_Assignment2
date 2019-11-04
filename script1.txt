@@ -1,0 +1,19 @@
+SHOW DATABASES;
+DROP DATABASE IF EXISTS ykang89assign2db;
+CREATE DATABASE ykang89assign2db;
+USE ykang89assign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON ykang89assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW TABLES;
+CREATE TABLE doctor(licensenum VARCHAR(4) NOT NULL, fname VARCHAR(20), lname VARCHAR(20), specialty VARCHAR(30), licensedate DATE, hospitalcode CHAR(3), PRIMARY KEY(licensenum));
+CREATE TABLE patient(ohipnum INT NOT NULL, fname VARCHAR(20), lname VARCHAR(20), PRIMARY KEY(ohipnum));
+CREATE TABLE hospital(hospitalcode CHAR(3) NOT NULL, name VARCHAR(20), city CHAR(20), province CHAR(2), bedcount INT, headnum CHAR(4), headdate DATE, PRIMARY KEY(hospitalcode), FOREIGN KEY(headnum) REFERENCES doctor(licensenum));
+CREATE TABLE treats(ohipnum INT NOT NULL, licensenum CHAR(4) NOT NULL, PRIMARY KEY(ohipnum, licensenum), FOREIGN KEY(ohipnum) REFERENCES patient(ohipnum), FOREIGN KEY(licensenum) REFERENCES doctor(licensenum) ON DELETE CASCADE);
+ALTER TABLE doctor ADD FOREIGN KEY (hospitalcode) REFERENCES hospital(hospitalcode);
+DROP TABLE doctor;
+SHOW TABLES;

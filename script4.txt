@@ -1,0 +1,23 @@
+USE ykang89assign2db;
+
+-- the following command does not work because some of the doctors
+-- who were licensed before 1965 are also head doctors of the hospitals.
+DELETE FROM doctor WHERE licensedate < "1965-01-01";
+
+CREATE VIEW chart AS SELECT patient.fname AS pfname, patient.lname AS plname, doctor.lname AS dlname, hospital.name AS hname FROM patient, doctor, hospital, treats WHERE doctor.licensenum = hospital.headnum AND treats.licensenum = doctor.licensenum AND treats.ohipnum = patient.ohipnum AND hospital.headdate > "1995-12-01";
+
+SELECT * FROM chart;
+SELECT * FROM doctor;
+SELECT * FROM treats;
+
+-- the following command works because we specified a cascade delete 
+-- when we delete a doctor who is treating patients.
+DELETE FROM doctor WHERE doctor.lname = "Clooney";
+SELECT * FROM doctor;
+
+SELECT * FROM treats;
+
+SELECT * FROM doctor;
+-- the following command does not work because there is one doctor (Dr. Aziz)
+-- who is also a head doctor of Victoria Hospital in London.
+DELETE FROM doctor WHERE specialty = "Surgeon";

@@ -1,0 +1,56 @@
+USE ykang89assign2db;
+
+LOAD DATA LOCAL INFILE 'loaddatafall2019.txt' INTO TABLE patient FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n';
+
+SELECT * FROM patient;
+SELECT COUNT(*) FROM doctor;
+SELECT COUNT(*) FROM hospital;
+SELECT COUNT(*) FROM treats;
+
+INSERT INTO patient VALUES (123123123, "Yurim", "Kang");
+SELECT * FROM patient;
+
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("RD34", "Bernie", "Kavorikian", "Urologist", "1980-09-09");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("GD56", "Joey", "Shabado", "Podiatrist", "1960-06-24");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("HT45", "Ross", "Clooney", "Surgeon", "1987-06-20");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("YT67", "Ben", "Spock", "Pediatrician", "1955-02-20");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("JK78", "Mandy", "Webster", "Surgeon", "1990-08-08");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("SE66", "Colleen", "Aziz", "Surgeon", "1989-08-24");
+INSERT INTO doctor (licensenum, fname, lname, specialty, licensedate) VALUES ("AB12", "Kiki", "Jung", "Surgeon", "1998-11-26");
+SELECT * FROM doctor;
+
+INSERT INTO hospital (hospitalcode, name, city, province, bedcount, headnum, headdate) VALUES ("BBC", "St.Joseph", "London", "On", 1000, "GD56", "1999-09-10");
+INSERT INTO hospital (hospitalcode, name, city, province, bedcount, headnum, headdate) VALUES ("ABC", "Victoria", "London", "On", 1600, "SE66", "1994-12-05");
+INSERT INTO hospital (hospitalcode, name, city, province, bedcount, headnum, headdate) VALUES ("DDE", "Victoria", "Victoria", "BC", 1200, "YT67", "1997-12-07");
+SELECT * FROM hospital;
+
+UPDATE doctor SET hospitalcode = "BBC" WHERE licensenum = "RD34"; 
+UPDATE doctor SET hospitalcode = "ABC" WHERE licensenum = "HT45"; 
+UPDATE doctor SET hospitalcode = "ABC" WHERE licensenum = "SE66"; 
+UPDATE doctor SET hospitalcode = "BBC" WHERE licensenum = "GD56"; 
+UPDATE doctor SET hospitalcode = "ABC" WHERE licensenum = "YT67"; 
+UPDATE doctor SET hospitalcode = "BBC" WHERE licensenum = "JK78"; 
+UPDATE doctor SET hospitalcode = "ABC" WHERE licensenum = "AB12"; 
+SELECT * FROM doctor;
+
+INSERT INTO treats (ohipnum, licensenum) VALUES (110112113, "GD56");
+INSERT INTO treats (ohipnum, licensenum) VALUES (444555666, "HT45");
+INSERT INTO treats (ohipnum, licensenum) VALUES (444555666, "JK78");
+INSERT INTO treats (ohipnum, licensenum) VALUES (111222333, "JK78");
+INSERT INTO treats (ohipnum, licensenum) VALUES (111222333, "SE66");
+INSERT INTO treats (ohipnum, licensenum) VALUES (111222333, "YT67");
+INSERT INTO treats (ohipnum, licensenum) VALUES (333444555, "GD56");
+INSERT INTO treats (ohipnum, licensenum) VALUES (667766777, "SE66");
+INSERT INTO treats (ohipnum, licensenum) VALUES (667766777, "YT67");
+INSERT INTO treats (ohipnum, licensenum) VALUES (667766777, "GD56");
+INSERT INTO treats (ohipnum, licensenum) VALUES (111222111, "YT67");
+INSERT INTO treats (ohipnum, licensenum) VALUES (123123123, "AB12");
+SELECT * FROM treats;
+
+SELECT * FROM patient;
+UPDATE patient SET lname="Brown" WHERE ohipnum="111222111";
+SELECT * FROM patient;
+
+SELECT * FROM treats;
+UPDATE treats SET licensenum=(SELECT licensenum FROM doctor WHERE lname="Clooney") WHERE licensenum=(SELECT licensenum FROM doctor WHERE lname="Spock");
+SELECT * FROM treats;
